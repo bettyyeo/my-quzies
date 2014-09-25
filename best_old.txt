@@ -1,0 +1,50 @@
+best <- function(state, outcome){
+  err1 <- "Invalid state"
+  res <- "Invalid outcome"
+  rownum <- 0
+ 
+  # return the lowest mortality rate
+  oc <- read.csv("outcome-of-care-measures.csv", colClasses = "character")
+  
+  #check for valid states
+  sub <- (subset(oc,State==state))
+  
+  if (nrow(sub)==0) {
+    res<-err1
+    stop("Invalid State") ## subset of the filtered state return no result
+  }
+  # 3 main column we are interested, element 11 - heart attack, 17 - heart failure, 23 for pneumonia
+  # element no 2 contain the hospital name, so it will be return as a result string
+  
+        if (outcome=="heart attack") {
+          
+          #----print("heart attack")
+          # ----- min function doesn't seem to work
+          #str1 <-subset(sub,sub[11]==min(sub[,11]))
+          #nrow(str1)
+          #res=str1$Hospital.Name
+          ## ---- which.min return the lowest value, but there could be cases of the same min value
+          ##rownum = which.min(sub[,11])
+          ##res=sub[rownum,2]
+          
+          sort <- sub[order(sub[,11],sub[,2]),]
+          res <- sort[1,2]
+        }
+        if (outcome=="heart failure") {
+          ##rownum <- which.min(sub[,17])
+          ##res <- sub[rownum,2]
+          sort <- sub[order(sub[,17],sub[,2]),]
+          res <- sort[1,2]
+        }
+        if (outcome=="pneumonia") {
+          #rownum = which.min(sub[,23])
+          #res=sub[rownum,2]
+          sort <- sub[order(sub[,23],sub[,2]),]
+          res <- sort[1,2]
+        }
+        return(res)
+        
+  
+  
+  
+}
